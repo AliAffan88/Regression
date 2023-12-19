@@ -1,0 +1,59 @@
+import streamlit as st
+
+# Define the coefficients from your linear regression equation
+intercept = 1672.28
+coefficients = {
+    'weight': -0.86,
+    'resolution': -54.27,
+    'ppi': 1.14,
+    'cpu core': 50.56,
+    'cpu_freq': 128.43,
+    'internal_mem': 4.81,
+    'ram': 109.51,
+    'RearCam': 1.94,
+    'Front_Cam': 3.97,
+    'battery': 0.14,
+    'thickness': -71.27
+}
+
+# Streamlit app title and description
+st.title('Mobile Price Prediction Dashboard')
+st.write('Set the parameters in the left to predict the mobile price.')
+
+# Sidebar section for input widgets
+st.sidebar.title('Input Parameters')
+
+# Create input widgets for user to input feature values
+weight = st.sidebar.slider('Weight (g)', min_value=0, max_value=500, step=10, value=150)
+resolution = st.sidebar.slider('Resolution (MP)', min_value=0.0, max_value=20.0, step=1.0, value=6.5)
+ppi = st.sidebar.slider('PPI', min_value=0, max_value=1000, step=10, value=667)
+cpu_core = st.sidebar.slider('CPU Cores', min_value=0, max_value=16, step=1, value=12)
+cpu_freq = st.sidebar.slider('CPU Frequency (GHz)', min_value=0.1, max_value=3.0, step=0.1, value=1.6)
+internal_mem = st.sidebar.slider('Internal Memory (GB)', min_value=8, max_value=1024, step=8, value=256)
+ram = st.sidebar.slider('RAM (GB)', min_value=0, max_value=1, step=1, value=8)
+RearCam = st.sidebar.slider('Rear Camera (MP)', min_value=0, max_value=80, step=1, value=8)
+Front_Cam = st.sidebar.slider('Front Camera (MP)', min_value=0, max_value=64, step=1, value=32)
+battery = st.sidebar.slider('Battery Capacity (mAh)', min_value=1500, max_value=10000, step=50, value=6000)
+thickness = st.sidebar.slider('Thickness (mm)', min_value=0.5, max_value=20.0, step=0.1, value=5.5)
+
+# Calculate the predicted price using the linear regression equation
+predicted_price = (
+    intercept +
+    coefficients['weight'] * weight +
+    coefficients['resolution'] * resolution +
+    coefficients['ppi'] * ppi +
+    coefficients['cpu core'] * cpu_core +
+    coefficients['cpu_freq'] * cpu_freq +
+    coefficients['internal_mem'] * internal_mem +
+    coefficients['ram'] * ram +
+    coefficients['RearCam'] * RearCam +
+    coefficients['Front_Cam'] * Front_Cam +
+    coefficients['battery'] * battery +
+    coefficients['thickness'] * thickness
+)
+
+# Main content section for displaying predicted price
+st.write('## Predicted Price')
+predicted_price_html = f'<div style="background-color: yellow; padding: 20px; border-radius: 10px;"><p style="color: green; font-size: 36px;"><strong>INR{predicted_price: .2f}</strong></p></div>'
+st.markdown(predicted_price_html, unsafe_allow_html=True)
+
